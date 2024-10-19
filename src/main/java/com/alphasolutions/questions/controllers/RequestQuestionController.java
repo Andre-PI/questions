@@ -7,6 +7,8 @@ import com.alphasolutions.questions.model.Question;
 import com.alphasolutions.questions.model.QuestionDAO;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,12 +34,14 @@ public class RequestQuestionController {
             return ResponseEntity.badRequest().body("Negado");
         }
 
-        List<Question> question = questionDAO.findByTopic(topic);
+        List<Question> questions = questionDAO.findByTopic(topic);
         
-        if(question == null){
+        if(questions.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(question);
+        Map<Long, Question> questionsMap = questions.stream()
+            .collect(Collectors.toMap(Question::getId, question -> question));
+        return ResponseEntity.ok(questionsMap);
     }
     
 }
