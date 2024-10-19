@@ -26,7 +26,7 @@ public class RequestQuestionController {
     @Autowired
     QuestionDAO questionDAO;
 
-    @GetMapping(path = "/getquestion", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/getquestion",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getQuestion(@RequestHeader(value = "x-api-key") String key, @RequestParam String topic) {
         if(!apiKey.equals(key)){
             return ResponseEntity.badRequest().body("Negado");
