@@ -77,16 +77,4 @@ public class Question {
         this.topic = topic;
     }
 
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
-                ", wrongAnswer='" + wrongAnswer + '\'' +
-                ", secondWrongAnswer='" + secondWrongAnswer + '\'' +
-                ", topic='" + topic + '\'' +
-                '}';
-    }
 }
