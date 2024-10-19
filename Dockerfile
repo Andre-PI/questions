@@ -1,24 +1,26 @@
-# Estágio 1: Build com Maven
-FROM maven:3.8.6-openjdk-17 AS builder
+# Usar a imagem base do OpenJDK 21
+FROM azul/zulu-openjdk-alpine:21.0.2
 
-# Definir o diretório de trabalho
+# Instalar Maven dentro do container
+RUN apk add --no-cache maven
+
+# Definir o diretório de trabalho no container
 WORKDIR /app
 
-# Copiar o código fonte e o pom.xml para o container
+# Copiar o arquivo pom.xml e as dependências primeiro para aproveitar o cache do Docker
 COPY pom.xml .
+
+# Baixar as dependências do Maven (isso será cacheado pelo Docker se o pom.xml não mudar)
+RUN mvn dependency:go-offline
+
+# Copiar o código fonte para o container
 COPY src ./src
 
 # Rodar o Maven para construir o projeto
 RUN mvn clean package
 
-# Estágio 2: Execução com OpenJDK 21
-FROM azul/zulu-openjdk-alpine:21.0.2
-
-# Definir o diretório de trabalho no container
-WORKDIR /app
-
-# Copiar o arquivo .jar do estágio de build para o estágio final
-COPY --from=builder /app/target/questions-0.0.1-SNAPSHOT.jar /app/questions.jar
+# Copiar o JAR gerado para o diretório de trabalho do container
+COPY target/questions-0.0.1-SNAPSHOT.jar /app/questions.jar
 
 # Expor a porta que a aplicação usará
 EXPOSE 8080
