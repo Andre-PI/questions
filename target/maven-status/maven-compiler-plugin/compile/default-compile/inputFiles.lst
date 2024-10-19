@@ -1,0 +1,4 @@
+/home/avorio/programming/questions/src/main/java/com/alphasolutions/questions/QuestionsApplication.java
+/home/avorio/programming/questions/src/main/java/com/alphasolutions/questions/controllers/RequestQuestionController.java
+/home/avorio/programming/questions/src/main/java/com/alphasolutions/questions/model/Question.java
+/home/avorio/programming/questions/src/main/java/com/alphasolutions/questions/model/QuestionDAO.java
