@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,19 +28,19 @@ public class RequestQuestionController {
     QuestionDAO questionDAO;
 
     @GetMapping(path = "/getquestion",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getQuestion(@RequestHeader(value = "x-api-key") String key, @RequestParam String topic) {
+    public Map<Long,Question> getQuestion(@RequestHeader(value = "x-api-key") String key, @RequestParam String topic)  {
         if(!apiKey.equals(key)){
-            return ResponseEntity.badRequest().body("Negado");
+            return null;
         }
 
         List<Question> questions = questionDAO.findByTopic(topic);
         
         if(questions.isEmpty()){
-            return ResponseEntity.notFound().build();
+            return null;
         }
         Map<Long, Question> questionsMap = questions.stream()
             .collect(Collectors.toMap(Question::getId, question -> question));
-        return ResponseEntity.ok(questionsMap);
+        return questionsMap;
     }
     
 }
