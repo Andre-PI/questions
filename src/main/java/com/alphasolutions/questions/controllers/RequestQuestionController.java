@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alphasolutions.questions.model.Question;
 import com.alphasolutions.questions.model.QuestionDAO;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class RequestQuestionController {
     QuestionDAO questionDAO;
 
     @GetMapping(path = "/getquestion",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<Long,Question> getQuestion(@RequestHeader(value = "x-api-key") String key, @RequestParam String topic)  {
+    public Question getQuestion(@RequestHeader(value = "x-api-key") String key, @RequestParam String topic)  {
         if(!apiKey.equals(key)){
             return null;
         }
@@ -38,9 +39,10 @@ public class RequestQuestionController {
         if(questions.isEmpty()){
             return null;
         }
-        Map<Long, Question> questionsMap = questions.stream()
-            .collect(Collectors.toMap(Question::getId, question -> question));
-        return questionsMap;
+        Question question = questions.get(0);
+        
+        return new Question(question.getQuestion(),question.getAnswer(),question.getWrongAnswer(),question.getSecondWrongAnswer(),question.getTopic());
+
     }
     
 }

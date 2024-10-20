@@ -25,8 +25,17 @@ public class Question {
     private String secondWrongAnswer;
 
     private String topic;
-
+    
     public Question() {}
+
+    public Question(String question, String answer, String wrongAnswer, String secondWrongAnswer, String topic) {
+        this.question = question;
+        this.answer = answer;
+        this.wrongAnswer = wrongAnswer;
+        this.secondWrongAnswer = secondWrongAnswer;
+        this.topic = topic;
+    }
+
 
 
     public Long getId() {
